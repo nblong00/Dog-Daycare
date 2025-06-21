@@ -26,7 +26,8 @@ class Human(Base):
     name = Column(String)
     phone = Column (String)
     dog = relationship('Dog', back_populates = 'owner')
-    purchase = relationship('Purchase', back_populates = 'member')
+    purchase = relationship('Purchase', back_populates = 'person')
+    subscription = relationship('Subscription', back_populates = 'member')
 
     def __repr__(self):
         return f'<Owner(ID: {self.id}, Dog ID: {self.dog_id}, Name: {self.name}, Phone: {self.phone})>'
@@ -38,11 +39,22 @@ class Purchase(Base):
     human_id = Column(Integer, ForeignKey('Owner.id'))
     item = Column(String)
     price = Column(Integer)
-    member = relationship('Human', back_populates = 'purchase')
+    person = relationship('Human', back_populates = 'purchase')
 
     def __repr__(self):
-        return f'<Purchase(ID: {self.id}, Member ID: {self.human_id}, Price: {self.price})>'
+        return f'<Purchase(ID: {self.id}, Person ID: {self.human_id}, Price: {self.price})>'
 
+
+class Subscription(Base):
+    __tablename__ = 'Subscriptions'
+    id = Column(Integer, primary_key=True)
+    member_id = Column(Integer, ForeignKey('Owner.id'))
+    tier = Column(Integer)
+    status = Column(String)
+    member = relationship('Human', back_populates = 'subscription')
+
+    def __repr__(self):
+        return f'<Subscription(ID: {self.id}, Member ID: {self.member_id}, Tier: {self.tier}, Status: {self.status})>'
 
 if __name__ == '__main__':
     Base.metadata.create_all(engine)
