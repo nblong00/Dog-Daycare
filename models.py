@@ -55,7 +55,3 @@ class Subscription(Base):
 
     def __repr__(self):
         return f"<Subscription(ID: {self.id}, Member ID: {self.member_id}, Tier: {self.tier}, Status: {self.status})>"
-
-
-if __name__ == "__main__":
-    Base.metadata.create_all(engine)
