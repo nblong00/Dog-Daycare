@@ -28,6 +28,9 @@ def menu():
             menu_choice = input("\n> ")
 
 
+    def app(menu_choice):
+        pass
+
 if __name__ == "__main__":
     Base.metadata.create_all(engine)
-    menu()
+    menu_choice = menu()
