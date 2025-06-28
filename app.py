@@ -1,5 +1,6 @@
 from models import (Base, engine, session,
                     Dog, Human, Purchase, Subscription)
+import time
 
 
 def menu():
@@ -37,14 +38,20 @@ def app(menu_choice):
             dog_breed = input("Enter dog's breed: ")
             owner_name = input("Enter owner's name: ")
             owner_phone = input("Enter owner's phone number: ")
-            animal_check = session.query(Dog).filter(Dog.name==dog_name).filter(Dog.breed==dog_breed).first()
+            animal_check = session.query(Dog).filter(Dog.name == dog_name).filter(Dog.breed == dog_breed).first()
             if animal_check == None:
-                pass
+                new_dog = Dog(name = dog_name, breed = dog_breed)
+                newest_dog = session.query(Dog).order_by(Dog.id.desc()).first()
+                new_owner = Human(dog_id = (newest_dog.id + 1), name = owner_name, phone = owner_phone)
+                session.add_all([new_dog, new_owner])
+                session.commit()
+                time.sleep(0.5)
+                print('New Dog and Owner added to database!')
+                return
             else:
                 print("\nDog and breed combo already exists in database.")
                 print("Enter info for dog not currently in system.")
                 continue
-
     elif menu_choice == "2":
         pass
     elif menu_choice == "3":
@@ -57,6 +64,7 @@ def app(menu_choice):
         exit()
     else:
         pass
+
 
 if __name__ == "__main__":
     Base.metadata.create_all(engine)
