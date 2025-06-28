@@ -43,11 +43,17 @@ def app(menu_choice):
                 new_dog = Dog(name = dog_name, breed = dog_breed)
                 newest_dog = session.query(Dog).order_by(Dog.id.desc()).first()
                 new_owner = Human(dog_id = (newest_dog.id + 1), name = owner_name, phone = owner_phone)
+                time.sleep(0.5)
                 session.add_all([new_dog, new_owner])
                 session.commit()
-                time.sleep(0.5)
-                print('New Dog and Owner added to database!')
-                return
+                print("New Dog and Owner added to database!")
+                print("Would you like to add another new entry? (yes/no)")
+                user_input = input("\n> ")
+                if user_input in ["yes", "ye", "y"]:
+                    continue
+                elif user_input in ["no", "n"]:
+                    exit()
+
             else:
                 print("\nDog and breed combo already exists in database.")
                 print("Enter info for dog not currently in system.")
