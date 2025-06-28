@@ -31,9 +31,8 @@ def menu():
             menu_choice = input("> ")
 
 
-def app(menu_choice):
-    if menu_choice == "1":
-        while True:
+def create_dog_owner():
+    while True:
             dog_name = input("Enter dog's name: ")
             dog_breed = input("Enter dog's breed: ")
             owner_name = input("Enter owner's name: ")
@@ -47,17 +46,22 @@ def app(menu_choice):
                 session.add_all([new_dog, new_owner])
                 session.commit()
                 print("New Dog and Owner added to database!")
+                print("------------------------------------")
                 print("Would you like to add another new entry? (yes/no)")
                 user_input = input("\n> ")
                 if user_input in ["yes", "ye", "y"]:
                     continue
                 elif user_input in ["no", "n"]:
                     exit()
-
             else:
                 print("\nDog and breed combo already exists in database.")
                 print("Enter info for dog not currently in system.")
                 continue
+
+
+def app(menu_choice):
+    if menu_choice == "1":
+        create_dog_owner()
     elif menu_choice == "2":
         pass
     elif menu_choice == "3":
