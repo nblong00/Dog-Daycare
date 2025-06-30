@@ -9,8 +9,8 @@ def menu():
             \rChoose one of the below options:
             \r1) Create new Dog & Owner record
             \r2) Log new Purchase from Owner
-            \r3) Check current Subscriptions
-            \r4) Create new Owner Subscription record
+            \r3) Create new Owner Subscription record
+            \r4) Check current Subscriptions
             \r5) Edit existing Subscription record
             \r6) EXIT PROGRAM
             '''
@@ -24,7 +24,8 @@ def menu():
             menu_choice = input("> ")
 
 
-def purchase_convert(purchase):
+def purchase_convert():
+    purchase = float(input("Enter purchase total (ex. 19.99): "))
     purchase_pennies = int(purchase * 100)
     return purchase_pennies
 
@@ -57,14 +58,10 @@ def create_dog_owner():
                 continue
 
 
-def app(menu_choice):
-    if menu_choice == "1":
-        create_dog_owner()
-    elif menu_choice == "2":
-        while True:
+def log_purchase():
+    while True:
             item_name = input("Enter name of item:")
-            purchase_input = float(input("Enter purchase total (ex. 19.99): "))
-            purchase_pennies = purchase_convert(purchase_input)
+            purchase_pennies = purchase_convert()
             owner_number = input("Enter owner phone number: ")
             owner_record = session.query(Human).filter(Human.phone==owner_number).first()
             purchase = Purchase(human_id=owner_record.id, item=item_name, price=purchase_pennies)
@@ -78,6 +75,13 @@ def app(menu_choice):
                 continue
             elif user_input in ["no", "n"]:
                 exit()
+
+
+def app(menu_choice):
+    if menu_choice == "1":
+        create_dog_owner()
+    elif menu_choice == "2":
+        log_purchase()
     elif menu_choice == "3":
         pass
     elif menu_choice == "4":
