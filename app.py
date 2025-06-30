@@ -31,6 +31,11 @@ def menu():
             menu_choice = input("> ")
 
 
+def purchase_convert(purchase):
+    purchase_pennies = int(purchase * 100)
+    return purchase_pennies
+
+
 def create_dog_owner():
     while True:
             dog_name = input("Enter dog's name: ")
@@ -63,7 +68,23 @@ def app(menu_choice):
     if menu_choice == "1":
         create_dog_owner()
     elif menu_choice == "2":
-        pass
+        while True:
+            item_name = input("Enter name of item:")
+            purchase_input = float(input("Enter purchase total (ex. 19.99): "))
+            purchase_pennies = purchase_convert(purchase_input)
+            owner_number = input("Enter owner phone number: ")
+            owner_record = session.query(Human).filter(Human.phone==owner_number).first()
+            purchase = Purchase(human_id=owner_record.id, item=item_name, price=purchase_pennies)
+            session.add(purchase)
+            session.commit()
+            print("Purchase added to database!")
+            print("------------------------------------")
+            print("Would you like to add another new entry? (yes/no)")
+            user_input = input("\n> ")
+            if user_input in ["yes", "ye", "y"]:
+                continue
+            elif user_input in ["no", "n"]:
+                exit()
     elif menu_choice == "3":
         pass
     elif menu_choice == "4":
