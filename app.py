@@ -30,12 +30,9 @@ def purchase_convert():
     return purchase_pennies
 
 
-def create_dog_owner():
+def create_dog_owner(dog_name, dog_breed,
+                    owner_name, owner_phone):
     while True:
-            dog_name = input("Enter dog's name: ")
-            dog_breed = input("Enter dog's breed: ")
-            owner_name = input("Enter owner's name: ")
-            owner_phone = input("Enter owner's phone number: ")
             animal_check = session.query(Dog).filter(Dog.name == dog_name).filter(Dog.breed == dog_breed).first()
             if animal_check == None:
                 new_dog = Dog(name = dog_name, breed = dog_breed)
@@ -113,7 +110,8 @@ def create_owner_sub():
                 if animal_check == None:
                     print("Dog does not currently exist in system.")
                     input("Press ENTER add Dog to system...")
-                    create_dog_owner()
+                    create_dog_owner(dog_name, dog_breed,
+                                     owner_name, owner_phone)
                 elif phone_check != None:
                     print("Phone number already exists in system.")
                     input("Press ENTER to setup subscription...")
@@ -138,23 +136,23 @@ def create_owner_sub():
                     print("------------------------------------")
                     input("Press ENTER to start subscription setup...")
                     phone_exists = session.query(Human).filter(Human.phone == owner_phone).first()
-                    if phone_exists != None:
-                        tier = input("Enter tier of subscription (1-3): ")
-                        new_sub = Subscription(member_id = phone_exists.id, tier = tier, status = "Active")
-                        session.add(new_sub)
-                        session.commit()
-                        time.sleep(0.5)
-                        print("\nNew Subscription added to database!")
-                        print("------------------------------------")
-                        print("Would you like to add another new entry? (yes/no)")
-                        user_input = input("\n> ")
-                        if user_input in ["yes", "ye", "y"]:
-                            continue
-                        elif user_input in ["no", "n"]:
-                            exit()
+                    tier = input("Enter tier of subscription (1-3): ")
+                    new_sub = Subscription(member_id = phone_exists.id, tier = tier, status = "Active")
+                    session.add(new_sub)
+                    session.commit()
+                    time.sleep(0.5)
+                    print("\nNew Subscription added to database!")
+                    print("------------------------------------")
+                    print("Would you like to add another new entry? (yes/no)")
+                    user_input = input("\n> ")
+                    if user_input in ["yes", "ye", "y"]:
+                        continue
+                    elif user_input in ["no", "n"]:
+                        exit()
             elif missing_item in ["no", "n"]:
                 input("Press ENTER add Dog to system...")
-                create_dog_owner()
+                create_dog_owner(dog_name, dog_breed,
+                                 owner_name, owner_phone)
             elif missing_item.lower() == "exit":
                 pass
         elif owner_exist.lower() == "exit":
@@ -165,7 +163,12 @@ def app():
     while True:
         menu_choice = menu()
         if menu_choice == "1":
-            create_dog_owner()
+            dog_name = input("Enter dog's name: ")
+            dog_breed = input("Enter dog's breed: ")
+            owner_name = input("Enter owner's name: ")
+            owner_phone = input("Enter owner's phone number: ")
+            create_dog_owner(dog_name, dog_breed,
+                             owner_name, owner_phone)
         elif menu_choice == "2":
             log_purchase()
         elif menu_choice == "3":
