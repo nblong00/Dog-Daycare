@@ -179,8 +179,6 @@ def app():
             pass
         elif menu_choice == "6":
             exit()
-        else:
-            pass
 
 
 if __name__ == "__main__":
