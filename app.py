@@ -159,6 +159,20 @@ def create_owner_sub():
             break
 
 
+def check_current_subs():
+    while True:
+        current_subs = session.query(Subscription).all()
+        print("\nFetching current subscribers...")
+        time.sleep(1)
+        print("----------------------------------------")
+        for sub in current_subs:
+            sub_user = session.query(Human).filter(Human.id == sub.member_id).first()
+            print(f"Sub_ID: {sub.id} | Name: {sub_user.name} | Phone: {sub_user.phone} | Tier: {sub.tier} | Status: {sub.status}")
+        print("----------------------------------------")
+        input("\nPress ENTER to return back to Main Menu...")
+        break
+
+
 def app():
     while True:
         menu_choice = menu()
@@ -174,7 +188,7 @@ def app():
         elif menu_choice == "3":
             create_owner_sub()
         elif menu_choice == "4":
-            pass
+            check_current_subs()
         elif menu_choice == "5":
             pass
         elif menu_choice == "6":
