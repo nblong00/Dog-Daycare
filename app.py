@@ -154,9 +154,9 @@ def create_owner_sub():
                 create_dog_owner(dog_name, dog_breed,
                                  owner_name, owner_phone)
             elif missing_item.lower() == "exit":
-                pass
+                break
         elif owner_exist.lower() == "exit":
-            pass
+            break
 
 
 def app():
