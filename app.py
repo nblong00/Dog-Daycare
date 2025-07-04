@@ -48,7 +48,7 @@ def create_dog_owner(dog_name, dog_breed,
                 if user_input in ["yes", "ye", "y"]:
                     continue
                 elif user_input in ["no", "n"]:
-                    exit()
+                    break
             else:
                 print("\nDog and breed combo already exists in database.")
                 print("Enter info for dog not currently in system.\n")
@@ -71,7 +71,7 @@ def log_purchase():
             if user_input in ["yes", "ye", "y"]:
                 continue
             elif user_input in ["no", "n"]:
-                exit()
+                break
 
 
 def create_owner_sub():
@@ -95,7 +95,7 @@ def create_owner_sub():
                 if user_input in ["yes", "ye", "y"]:
                     continue
                 elif user_input in ["no", "n"]:
-                    exit()
+                    break
         if owner_exist in ["no", "n"]:
             print("Is Dog registered in system? (yes/no)")
             print("* Enter EXIT to return to Main Menu.")
@@ -127,7 +127,7 @@ def create_owner_sub():
                     if user_input in ["yes", "ye", "y"]:
                         continue
                     elif user_input in ["no", "n"]:
-                        exit()
+                        break
                 elif phone_check == None and animal_check != None:
                     new_owner = Human(dog_id = animal_check.id, name = owner_name, phone = owner_phone)
                     session.add(new_owner)
@@ -148,7 +148,7 @@ def create_owner_sub():
                     if user_input in ["yes", "ye", "y"]:
                         continue
                     elif user_input in ["no", "n"]:
-                        exit()
+                        break
             elif missing_item in ["no", "n"]:
                 input("Press ENTER add Dog to system...")
                 create_dog_owner(dog_name, dog_breed,
@@ -160,17 +160,15 @@ def create_owner_sub():
 
 
 def check_current_subs():
-    while True:
-        current_subs = session.query(Subscription).all()
-        print("\nFetching current subscribers...")
-        time.sleep(1)
-        print("----------------------------------------")
-        for sub in current_subs:
-            sub_user = session.query(Human).filter(Human.id == sub.member_id).first()
-            print(f"Sub_ID: {sub.id} | Name: {sub_user.name} | Phone: {sub_user.phone} | Tier: {sub.tier} | Status: {sub.status}")
-        print("----------------------------------------")
-        input("\nPress ENTER to return back to Main Menu...")
-        break
+    current_subs = session.query(Subscription).all()
+    print("\nFetching current subscribers...")
+    time.sleep(1)
+    print("----------------------------------------")
+    for sub in current_subs:
+        sub_user = session.query(Human).filter(Human.id == sub.member_id).first()
+        print(f"Sub_ID: {sub.id} | Name: {sub_user.name} | Phone: {sub_user.phone} | Tier: {sub.tier} | Status: {sub.status}")
+    print("----------------------------------------")
+    input("\nPress ENTER to return back to Main Menu...")
 
 
 def change_status_on_sub():
