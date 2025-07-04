@@ -173,6 +173,25 @@ def check_current_subs():
         break
 
 
+def change_status_on_sub():
+    while True:
+        phone_number = input("Enter subscriber's phone number: ")
+        subscriber = session.query(Human).filter(Human.phone == phone_number).first()
+        if subscriber != None:
+            status_change = input("Enter 'Deactivate' or 'Reactivate' to adjust status: ")
+            subscription = session.query(Subscription).filter(Subscription.member_id == subscriber.id).first()
+            if status_change.lower() == "deactivate":
+                subscription.status = "Deactivated"
+            elif status_change.lower() == "reactivate":
+                subscription.status = "Active"
+            session.commit()
+            user_input = input("\n> ")
+            if user_input in ["yes", "ye", "y"]:
+                continue
+            elif user_input in ["no", "n"]:
+                break
+
+
 def app():
     while True:
         menu_choice = menu()
@@ -190,7 +209,7 @@ def app():
         elif menu_choice == "4":
             check_current_subs()
         elif menu_choice == "5":
-            pass
+            change_status_on_sub()
         elif menu_choice == "6":
             exit()
 
