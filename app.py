@@ -20,7 +20,7 @@ def menu():
         if menu_choice in ["1", "2", "3", "4", "5", "6"]:
             return menu_choice
         else:
-            print(menu)
+            print("Invalid Entry. Input needs to be a number 1 through 6.\n")
             menu_choice = input("> ")
 
 
