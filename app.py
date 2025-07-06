@@ -175,20 +175,35 @@ def change_status_on_sub():
     while True:
         phone_number = input("Enter subscriber's phone number: ")
         subscriber = session.query(Human).filter(Human.phone == phone_number).first()
+        time.sleep(0.5)
+        print("\n----------------------------------------")
+        time.sleep(0.5)
         if subscriber != None:
-            status_change = input("Enter 'Deactivate' or 'Reactivate' to adjust status: ")
+            print(f"""
+                  \rSubscriber selected-
+                  \rPhone Number: {phone_number} | Name: {subscriber.name}\n
+                  \rSelect one of the below options:
+                  \r1) Reactivate subscriber status
+                  \r2) Deactivate subscriber status
+                  \r3) Back to enter phone number
+                  """)
+            next_step = input("> ")
             subscription = session.query(Subscription).filter(Subscription.member_id == subscriber.id).first()
-            if status_change.lower() == "deactivate":
-                subscription.status = "Deactivated"
-            elif status_change.lower() == "reactivate":
+            if next_step == "1":
                 subscription.status = "Active"
+            elif next_step == "2":
+                subscription.status = "Deactivated"
+            elif next_step == "3":
+                continue
             session.commit()
+            print("Subscription status updated!")
+            print("------------------------------------")
+            print("Would you like to change another subscription? (yes/no)")
             user_input = input("\n> ")
             if user_input in ["yes", "ye", "y"]:
                 continue
             elif user_input in ["no", "n"]:
                 break
-
 
 def app():
     while True:
