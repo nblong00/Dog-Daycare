@@ -186,6 +186,7 @@ def change_status_on_sub():
                   \r1) Reactivate subscriber status
                   \r2) Deactivate subscriber status
                   \r3) Back to enter phone number
+                  \r4) Go back to Main Menu
                   """)
             next_step = input("> ")
             subscription = session.query(Subscription).filter(Subscription.member_id == subscriber.id).first()
@@ -195,6 +196,8 @@ def change_status_on_sub():
                 subscription.status = "Deactivated"
             elif next_step == "3":
                 continue
+            elif next_step == "4":
+                break
             session.commit()
             print("Subscription status updated!")
             print("------------------------------------")
