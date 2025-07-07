@@ -222,6 +222,7 @@ def change_status_on_sub():
             elif user_input in ["no", "n"]:
                 break
 
+
 def app():
     while True:
         menu_choice = menu()
