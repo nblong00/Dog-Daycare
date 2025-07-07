@@ -44,10 +44,14 @@ def create_dog_owner(dog_name, dog_breed,
                 print("\nNew Dog and Owner added to database!")
                 print("------------------------------------")
                 input("Press ENTER to return to Main Menu...")
+                break
             else:
                 print("\nDog and breed combo already exists in database.")
                 print("Enter info for dog not currently in system.\n")
-                input("Press ENTER to try again...")
+                dog_name = input("Enter dog's name: ")
+                dog_breed = input("Enter dog's breed: ")
+                owner_name = input("Enter owner's name: ")
+                owner_phone = input("Enter owner's phone number: ")
                 continue
 
 
