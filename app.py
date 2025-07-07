@@ -43,15 +43,11 @@ def create_dog_owner(dog_name, dog_breed,
                 session.commit()
                 print("\nNew Dog and Owner added to database!")
                 print("------------------------------------")
-                print("Would you like to add another new entry? (yes/no)")
-                user_input = input("\n> ")
-                if user_input in ["yes", "ye", "y"]:
-                    continue
-                elif user_input in ["no", "n"]:
-                    break
+                input("Press ENTER to return to Main Menu...")
             else:
                 print("\nDog and breed combo already exists in database.")
                 print("Enter info for dog not currently in system.\n")
+                input("Press ENTER to try again...")
                 continue
 
 
