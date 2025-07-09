@@ -66,7 +66,7 @@ def log_purchase():
             session.commit()
             print("\nPurchase added to database!")
             print("------------------------------------")
-            print("Would you like to add another new entry? (yes/no)")
+            print("Would you like to log another purchase? (yes/no)")
             user_input = input("\n> ")
             if user_input in ["yes", "ye", "y"]:
                 continue
@@ -90,7 +90,7 @@ def create_owner_sub():
                 time.sleep(0.5)
                 print("\nNew Subscription added to database!")
                 print("------------------------------------")
-                print("Would you like to add another new entry? (yes/no)")
+                print("Would you like to add another subscription? (yes/no)")
                 user_input = input("\n> ")
                 if user_input in ["yes", "ye", "y"]:
                     continue
@@ -122,7 +122,7 @@ def create_owner_sub():
                     time.sleep(0.5)
                     print("\nNew Subscription added to database!")
                     print("------------------------------------")
-                    print("Would you like to add another new entry? (yes/no)")
+                    print("Would you like to add another subscription? (yes/no)")
                     user_input = input("\n> ")
                     if user_input in ["yes", "ye", "y"]:
                         continue
@@ -143,7 +143,7 @@ def create_owner_sub():
                     time.sleep(0.5)
                     print("\nNew Subscription added to database!")
                     print("------------------------------------")
-                    print("Would you like to add another new entry? (yes/no)")
+                    print("Would you like to add another subscription? (yes/no)")
                     user_input = input("\n> ")
                     if user_input in ["yes", "ye", "y"]:
                         continue
