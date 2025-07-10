@@ -13,7 +13,8 @@ class Dog(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     breed = Column(String)
-    owner = relationship("Human", back_populates = "dog")
+    owner = relationship("Human", back_populates = "dog",
+                         cascade="all, delete, delete-orphan")
 
     def __repr__(self):
         return f"<Dog(ID: {self.id}, Name: {self.name}, Breed: {self.breed})>"
