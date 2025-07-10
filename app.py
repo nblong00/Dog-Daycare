@@ -129,7 +129,7 @@ def create_owner_sub():
                     elif user_input in ["no", "n"]:
                         break
                 elif phone_check == None and animal_check != None:
-                    new_owner = Human(dog_id = animal_check.id, name = owner_name, phone = owner_phone)
+                    new_owner = Human(dog_id=animal_check.id, name=owner_name, phone=owner_phone)
                     session.add(new_owner)
                     session.commit()
                     print("\nNew Owner added to database!")
