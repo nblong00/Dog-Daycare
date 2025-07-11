@@ -32,12 +32,6 @@ def dog_info():
     return dog_name, dog_breed, owner_name, owner_phone
 
 
-def purchase_convert():
-    purchase = float(input("Enter purchase total (ex. 19.99): "))
-    purchase_pennies = int(purchase * 100)
-    return purchase_pennies
-
-
 def create_dog_owner(dog_name, dog_breed,
                     owner_name, owner_phone):
     while True:
@@ -59,6 +53,12 @@ def create_dog_owner(dog_name, dog_breed,
                 (dog_name, dog_breed,
                 owner_name, owner_phone) = dog_info()
                 continue
+
+
+def purchase_convert():
+    purchase = float(input("Enter purchase total (ex. 19.99): "))
+    purchase_pennies = int(purchase * 100)
+    return purchase_pennies
 
 
 def log_purchase():
