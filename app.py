@@ -35,24 +35,24 @@ def dog_info():
 def create_dog_owner(dog_name, dog_breed,
                     owner_name, owner_phone):
     while True:
-            animal_check = session.query(Dog).filter(Dog.name == dog_name).filter(Dog.breed == dog_breed).first()
-            if animal_check == None:
-                new_dog = Dog(name=dog_name, breed=dog_breed)
-                newest_dog = session.query(Dog).order_by(Dog.id.desc()).first()
-                new_owner = Human(dog_id=(newest_dog.id + 1), name=owner_name, phone=owner_phone)
-                time.sleep(0.5)
-                session.add_all([new_dog, new_owner])
-                session.commit()
-                print("\nNew Dog and Owner added to database!")
-                print("------------------------------------")
-                input("Press ENTER to return to Main Menu...")
-                break
-            else:
-                print("\nDog and breed combo already exists in database.")
-                print("Enter info for dog not currently in system.\n")
-                (dog_name, dog_breed,
-                owner_name, owner_phone) = dog_info()
-                continue
+        animal_check = session.query(Dog).filter(Dog.name == dog_name).filter(Dog.breed == dog_breed).first()
+        if animal_check == None:
+            new_dog = Dog(name=dog_name, breed=dog_breed)
+            newest_dog = session.query(Dog).order_by(Dog.id.desc()).first()
+            new_owner = Human(dog_id=(newest_dog.id + 1), name=owner_name, phone=owner_phone)
+            time.sleep(0.5)
+            session.add_all([new_dog, new_owner])
+            session.commit()
+            print("\nNew Dog and Owner added to database!")
+            print("------------------------------------")
+            input("Press ENTER to return to Main Menu...")
+            break
+        else:
+            print("\nDog and breed combo already exists in database.")
+            print("Enter info for dog not currently in system.\n")
+            (dog_name, dog_breed,
+            owner_name, owner_phone) = dog_info()
+            continue
 
 
 def purchase_convert():
@@ -63,21 +63,21 @@ def purchase_convert():
 
 def log_purchase():
     while True:
-            item_name = input("Enter name of item:")
-            purchase_pennies = purchase_convert()
-            owner_number = input("Enter owner phone number: ")
-            owner_record = session.query(Human).filter(Human.phone == owner_number).first()
-            purchase = Purchase(human_id=owner_record.id, item=item_name, price=purchase_pennies)
-            session.add(purchase)
-            session.commit()
-            print("\nPurchase added to database!")
-            print("------------------------------------")
-            print("Would you like to log another purchase? (yes/no)")
-            user_input = input("\n> ")
-            if user_input in ["yes", "ye", "y"]:
-                continue
-            elif user_input in ["no", "n"]:
-                break
+        item_name = input("Enter name of item:")
+        purchase_pennies = purchase_convert()
+        owner_number = input("Enter owner phone number: ")
+        owner_record = session.query(Human).filter(Human.phone == owner_number).first()
+        purchase = Purchase(human_id=owner_record.id, item=item_name, price=purchase_pennies)
+        session.add(purchase)
+        session.commit()
+        print("\nPurchase added to database!")
+        print("------------------------------------")
+        print("Would you like to log another purchase? (yes/no)")
+        user_input = input("\n> ")
+        if user_input in ["yes", "ye", "y"]:
+            continue
+        elif user_input in ["no", "n"]:
+            break
 
 
 def create_owner_sub():
