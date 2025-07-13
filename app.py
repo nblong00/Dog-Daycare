@@ -108,10 +108,59 @@ def check_if_owner_phone_exists(member_phone):
                 return True
 
 
+def check_if_dog_exists_for_sub():
+    (dog_name, dog_breed,
+    owner_name, owner_phone) = dog_info()
+    animal_check = session.query(Dog).filter(Dog.name == dog_name).filter(Dog.breed == dog_breed).first()
+    phone_check = session.query(Human).filter(Human.phone == owner_phone).first()
+    if animal_check == None:
+        print("Dog does not currently exist in system.")
+        input("Press ENTER add Dog to system...")
+        create_dog_owner(dog_name, dog_breed,
+                            owner_name, owner_phone)
+    elif phone_check != None:
+        print("Phone number already exists in system.")
+        input("Press ENTER to setup subscription...")
+        tier = input("Enter tier of subscription (1-3): ")
+        new_sub = Subscription(member_id=phone_check.id, tier=tier, status="Active")
+        session.add(new_sub)
+        session.commit()
+        time.sleep(0.5)
+        print("\nNew Subscription added to database!")
+        print("------------------------------------")
+        print("Would you like to add another subscription? (yes/no)")
+        user_input = input("\n> ")
+        if user_input in ["yes", "ye", "y"]:
+            return False
+        elif user_input in ["no", "n"]:
+            return True
+    elif phone_check == None and animal_check != None:
+        new_owner = Human(dog_id=animal_check.id, name=owner_name, phone=owner_phone)
+        session.add(new_owner)
+        session.commit()
+        print("\nNew Owner added to database!")
+        print("------------------------------------")
+        input("Press ENTER to start subscription setup...")
+        phone_exists = session.query(Human).filter(Human.phone == owner_phone).first()
+        tier = input("Enter tier of subscription (1-3): ")
+        new_sub = Subscription(member_id=phone_exists.id, tier=tier, status="Active")
+        session.add(new_sub)
+        session.commit()
+        time.sleep(0.5)
+        print("\nNew Subscription added to database!")
+        print("------------------------------------")
+        print("Would you like to add another subscription? (yes/no)")
+        user_input = input("\n> ")
+        if user_input in ["yes", "ye", "y"]:
+            return False
+        elif user_input in ["no", "n"]:
+            return True
+
+
 def create_owner_sub():
     exit_to_menu = 0
     while exit_to_menu == False:
-        print("Is Owner registered in system? (yes/no)")
+        print("\nIs Owner registered in system? (yes/no)")
         print("* Enter EXIT to return to Main Menu.")
         owner_exist = input("\n> ")
         if owner_exist in ["yes", "ye", "y"]:
@@ -122,54 +171,11 @@ def create_owner_sub():
             print("* Enter EXIT to return to Main Menu.")
             missing_item = input("\n> ")
             if missing_item in ["yes", "ye", "y"]:
-                (dog_name, dog_breed,
-                owner_name, owner_phone) = dog_info()
-                animal_check = session.query(Dog).filter(Dog.name == dog_name).filter(Dog.breed == dog_breed).first()
-                phone_check = session.query(Human).filter(Human.phone == owner_phone).first()
-                if animal_check == None:
-                    print("Dog does not currently exist in system.")
-                    input("Press ENTER add Dog to system...")
-                    create_dog_owner(dog_name, dog_breed,
-                                     owner_name, owner_phone)
-                elif phone_check != None:
-                    print("Phone number already exists in system.")
-                    input("Press ENTER to setup subscription...")
-                    tier = input("Enter tier of subscription (1-3): ")
-                    new_sub = Subscription(member_id=phone_check.id, tier=tier, status="Active")
-                    session.add(new_sub)
-                    session.commit()
-                    time.sleep(0.5)
-                    print("\nNew Subscription added to database!")
-                    print("------------------------------------")
-                    print("Would you like to add another subscription? (yes/no)")
-                    user_input = input("\n> ")
-                    if user_input in ["yes", "ye", "y"]:
-                        continue
-                    elif user_input in ["no", "n"]:
-                        break
-                elif phone_check == None and animal_check != None:
-                    new_owner = Human(dog_id=animal_check.id, name=owner_name, phone=owner_phone)
-                    session.add(new_owner)
-                    session.commit()
-                    print("\nNew Owner added to database!")
-                    print("------------------------------------")
-                    input("Press ENTER to start subscription setup...")
-                    phone_exists = session.query(Human).filter(Human.phone == owner_phone).first()
-                    tier = input("Enter tier of subscription (1-3): ")
-                    new_sub = Subscription(member_id=phone_exists.id, tier=tier, status="Active")
-                    session.add(new_sub)
-                    session.commit()
-                    time.sleep(0.5)
-                    print("\nNew Subscription added to database!")
-                    print("------------------------------------")
-                    print("Would you like to add another subscription? (yes/no)")
-                    user_input = input("\n> ")
-                    if user_input in ["yes", "ye", "y"]:
-                        continue
-                    elif user_input in ["no", "n"]:
-                        break
+                exit_to_menu = check_if_dog_exists_for_sub()
             elif missing_item in ["no", "n"]:
-                input("Press ENTER add Dog to system...")
+                input("\nPress ENTER add Dog to system...")
+                (dog_name, dog_breed,
+                 owner_name, owner_phone) = dog_info()
                 create_dog_owner(dog_name, dog_breed,
                                  owner_name, owner_phone)
             elif missing_item.lower() == "exit":
