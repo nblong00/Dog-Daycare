@@ -80,28 +80,43 @@ def log_purchase():
             break
 
 
-def create_owner_sub():
+def check_if_owner_phone_exists(member_phone):
+    phone_exists = session.query(Human).filter(Human.phone == member_phone).first()
     while True:
+        if phone_exists != None:
+            tier = input("Enter tier of subscription (1-3): ")
+            new_sub = Subscription(member_id=phone_exists.id, tier=tier, status="Active")
+            session.add(new_sub)
+            session.commit()
+            time.sleep(0.5)
+            print("\nNew Subscription added to database!")
+            print("------------------------------------")
+            print("Would you like to add another subscription? (yes/no)")
+            user_input = input("\n> ")
+            break
+        if phone_exists == None:
+            print("\nNumber entered is not in system...")
+            print("Choose option below (1-2):")
+            print(f"""
+                \r1) Try inputting phone again
+                \r2) Go back to Main Menu
+                """)
+            user_input = input("> ")
+            if user_input == '1':
+                member_phone = input("Enter owner's phone number: ")
+            if user_input == '2':
+                return True
+
+
+def create_owner_sub():
+    exit_to_menu = 0
+    while exit_to_menu == False:
         print("Is Owner registered in system? (yes/no)")
         print("* Enter EXIT to return to Main Menu.")
         owner_exist = input("\n> ")
         if owner_exist in ["yes", "ye", "y"]:
             member_phone = input("Enter owner's phone number: ")
-            phone_exists = session.query(Human).filter(Human.phone == member_phone).first()
-            if phone_exists != None:
-                tier = input("Enter tier of subscription (1-3): ")
-                new_sub = Subscription(member_id=phone_exists.id, tier=tier, status="Active")
-                session.add(new_sub)
-                session.commit()
-                time.sleep(0.5)
-                print("\nNew Subscription added to database!")
-                print("------------------------------------")
-                print("Would you like to add another subscription? (yes/no)")
-                user_input = input("\n> ")
-                if user_input in ["yes", "ye", "y"]:
-                    continue
-                elif user_input in ["no", "n"]:
-                    break
+            exit_to_menu = check_if_owner_phone_exists(member_phone)
         if owner_exist in ["no", "n"]:
             print("Is Dog registered in system? (yes/no)")
             print("* Enter EXIT to return to Main Menu.")
