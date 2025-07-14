@@ -208,13 +208,13 @@ def subscriber_status_change_menu(phone_number, subscriber):
               \r4) Back to enter phone number
               \r5) Go back to Main Menu
               """)
-        next_step = input("> ")
+        menu_decision = input("> ")
         subscription = session.query(Subscription).filter(Subscription.member_id == subscriber.id).first()
-        if next_step == "1":
+        if menu_decision == "1":
             subscription.status = "Active"
-        elif next_step == "2":
+        elif menu_decision == "2":
             subscription.status = "Deactivated"
-        elif next_step == "3":
+        elif menu_decision == "3":
             while True:
                 try:
                     tier_change = input("Enter tier to change to (1-3): ")
@@ -226,9 +226,9 @@ def subscriber_status_change_menu(phone_number, subscriber):
                 except ValueError:
                     print("\nEntry needs to be either 1, 2, or 3")
                     input("Press ENTER to try entering current tier again...\n")
-        elif next_step == "4":
+        elif menu_decision == "4":
             return False
-        elif next_step == "5":
+        elif menu_decision == "5":
             return True
 
 
@@ -240,7 +240,9 @@ def change_status_on_sub():
         time.sleep(0.5)
         print("\n----------------------------------------")
         time.sleep(0.5)
-        subscriber_status_change_menu(phone_number, subscriber)
+        end_loop = subscriber_status_change_menu(phone_number, subscriber)
+        if subscriber == None:
+            pass
         session.commit()
         print("\nSubscription updated!")
         print("------------------------------------")
