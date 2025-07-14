@@ -98,9 +98,9 @@ def check_if_owner_phone_exists(member_phone):
             print("\nNumber entered is not in system...")
             print("Choose option below (1-2):")
             print(f"""
-                \r1) Try inputting phone again
-                \r2) Go back to Main Menu
-                """)
+                  \r1) Try inputting phone again
+                  \r2) Go back to Main Menu
+                  """)
             user_input = input("> ")
             if user_input == '1':
                 member_phone = input("Enter owner's phone number: ")
