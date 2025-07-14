@@ -218,12 +218,12 @@ def sub_menu_decision_tree(menu_decision, subscription):
     elif menu_decision == "4":
         return False
     elif menu_decision == "5":
-        return True
+        return 'main-menu'
 
 
 def subscriber_status_change_menu():
-    end_loop = 0
-    while end_loop == False:
+    sub_menu_exit_choice = 0
+    while sub_menu_exit_choice == False:
         phone_number = input("Enter subscriber's phone number: ")
         subscriber = session.query(Human).filter(Human.phone == phone_number).first()
         time.sleep(0.5)
@@ -243,14 +243,17 @@ def subscriber_status_change_menu():
             menu_decision = input("> ")
             subscription = session.query(Subscription).filter(Subscription.member_id == subscriber.id).first()
             sub_menu_exit_choice = sub_menu_decision_tree(menu_decision, subscription)
-            #Need to refine exit logic
+            if sub_menu_exit_choice == 'main-menu':
+                return 'main-menu'
+            elif sub_menu_exit_choice == True:
+                return True
 
 
 def change_status_on_sub():
     end_loop = 0
     while end_loop == False:
         end_loop = subscriber_status_change_menu()
-        if end_loop == True:
+        if end_loop == 'main-menu':
             break
         session.commit()
         print("\nSubscription updated!")
@@ -259,9 +262,7 @@ def change_status_on_sub():
         print(end_loop)
         user_input = input("\n> ")
         if user_input in ["yes", "ye", "y"]:
-            continue
-        elif user_input in ["no", "n"]:
-            break
+            end_loop = 0
 
 
 def app():
