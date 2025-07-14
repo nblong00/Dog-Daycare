@@ -159,7 +159,7 @@ def check_if_dog_and_owner_exist_for_sub():
 
 def create_owner_sub():
     exit_to_menu = 0
-    while exit_to_menu == False:
+    while not exit_to_menu:
         print("\nIs Owner registered in system? (yes/no)")
         print("* Enter EXIT to return to Main Menu.")
         owner_exist = input("\n> ")
@@ -223,7 +223,7 @@ def sub_menu_decision_tree(menu_decision, subscription):
 
 def subscriber_status_change_menu():
     sub_menu_exit_choice = 0
-    while sub_menu_exit_choice == False:
+    while not sub_menu_exit_choice:
         phone_number = input("Enter subscriber's phone number: ")
         subscriber = session.query(Human).filter(Human.phone == phone_number).first()
         time.sleep(0.5)
@@ -251,7 +251,7 @@ def subscriber_status_change_menu():
 
 def change_status_on_sub():
     end_loop = 0
-    while end_loop == False:
+    while not end_loop:
         end_loop = subscriber_status_change_menu()
         if end_loop == 'main-menu':
             break
