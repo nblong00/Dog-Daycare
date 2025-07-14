@@ -196,11 +196,39 @@ def check_current_subs():
     input("\nPress ENTER to return back to Main Menu...")
 
 
+def sub_menu_decision_tree(menu_decision, subscription):
+    if menu_decision == "1":
+        subscription.status = "Active"
+        return True
+    elif menu_decision == "2":
+        subscription.status = "Deactivated"
+        return True
+    elif menu_decision == "3":
+        while True:
+            try:
+                tier_change = input("Enter tier to change to (1-3): ")
+                if tier_change in ["1", "2", "3"]:
+                    subscription.tier = int(tier_change)
+                    return True
+                else:
+                    raise ValueError
+            except ValueError:
+                print("\nEntry needs to be either 1, 2, or 3")
+                input("Press ENTER to try entering current tier again...\n")
+    elif menu_decision == "4":
+        return False
+    elif menu_decision == "5":
+        return True
+
+
 def subscriber_status_change_menu():
     end_loop = 0
     while end_loop == False:
         phone_number = input("Enter subscriber's phone number: ")
         subscriber = session.query(Human).filter(Human.phone == phone_number).first()
+        time.sleep(0.5)
+        print("\n----------------------------------------")
+        time.sleep(0.5)
         if subscriber != None:
             print(f"""
                   \rSubscriber selected-
@@ -214,34 +242,13 @@ def subscriber_status_change_menu():
                   """)
             menu_decision = input("> ")
             subscription = session.query(Subscription).filter(Subscription.member_id == subscriber.id).first()
-            if menu_decision == "1":
-                subscription.status = "Active"
-            elif menu_decision == "2":
-                subscription.status = "Deactivated"
-            elif menu_decision == "3":
-                while True:
-                    try:
-                        tier_change = input("Enter tier to change to (1-3): ")
-                        if tier_change in ["1", "2", "3"]:
-                            subscription.tier = int(tier_change)
-                            break
-                        else:
-                            raise ValueError
-                    except ValueError:
-                        print("\nEntry needs to be either 1, 2, or 3")
-                        input("Press ENTER to try entering current tier again...\n")
-            elif menu_decision == "4":
-                return False
-            elif menu_decision == "5":
-                return True
+            sub_menu_exit_choice = sub_menu_decision_tree(menu_decision, subscription)
+            #Need to refine exit logic
 
 
 def change_status_on_sub():
     end_loop = 0
     while end_loop == False:
-        time.sleep(0.5)
-        print("\n----------------------------------------")
-        time.sleep(0.5)
         end_loop = subscriber_status_change_menu()
         if end_loop == True:
             break
@@ -249,6 +256,7 @@ def change_status_on_sub():
         print("\nSubscription updated!")
         print("------------------------------------")
         print("Would you like to change another subscription? (yes/no)")
+        print(end_loop)
         user_input = input("\n> ")
         if user_input in ["yes", "ye", "y"]:
             continue
