@@ -220,12 +220,12 @@ def subscriber_status_change_menu(phone_number, subscriber):
                     tier_change = input("Enter tier to change to (1-3): ")
                     if tier_change in ["1", "2", "3"]:
                         subscription.tier = int(tier_change)
+                        break
                     else:
                         raise ValueError
                 except ValueError:
                     print("\nEntry needs to be either 1, 2, or 3")
                     input("Press ENTER to try entering current tier again...\n")
-                break
         elif next_step == "4":
             return False
         elif next_step == "5":
