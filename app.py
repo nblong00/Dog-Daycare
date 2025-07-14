@@ -108,7 +108,7 @@ def check_if_owner_phone_exists(member_phone):
                 return True
 
 
-def check_if_dog_exists_for_sub():
+def check_if_dog_and_owner_exist_for_sub():
     (dog_name, dog_breed,
     owner_name, owner_phone) = dog_info()
     animal_check = session.query(Dog).filter(Dog.name == dog_name).filter(Dog.breed == dog_breed).first()
@@ -171,7 +171,7 @@ def create_owner_sub():
             print("* Enter EXIT to return to Main Menu.")
             missing_item = input("\n> ")
             if missing_item in ["yes", "ye", "y"]:
-                exit_to_menu = check_if_dog_exists_for_sub()
+                exit_to_menu = check_if_dog_and_owner_exist_for_sub()
             elif missing_item in ["no", "n"]:
                 input("\nPress ENTER add Dog to system...")
                 (dog_name, dog_breed,
