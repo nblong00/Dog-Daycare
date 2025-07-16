@@ -1,6 +1,7 @@
 from models import (Base, engine, session,
                     Dog, Human, Purchase, Subscription)
 import time
+import dog
 
 
 def menu():
@@ -22,37 +23,6 @@ def menu():
         else:
             print("Invalid Entry. Input needs to be a number 1 through 6.\n")
             menu_choice = input("> ")
-
-
-def dog_info():
-    dog_name = input("Enter dog's name: ")
-    dog_breed = input("Enter dog's breed: ")
-    owner_name = input("Enter owner's name: ")
-    owner_phone = input("Enter owner's phone number: ")
-    return dog_name, dog_breed, owner_name, owner_phone
-
-
-def create_dog_owner(dog_name, dog_breed,
-                    owner_name, owner_phone):
-    while True:
-        animal_check = session.query(Dog).filter(Dog.name == dog_name).filter(Dog.breed == dog_breed).first()
-        if animal_check == None:
-            new_dog = Dog(name=dog_name, breed=dog_breed)
-            newest_dog = session.query(Dog).order_by(Dog.id.desc()).first()
-            new_owner = Human(dog_id=(newest_dog.id + 1), name=owner_name, phone=owner_phone)
-            time.sleep(0.5)
-            session.add_all([new_dog, new_owner])
-            session.commit()
-            print("\nNew Dog and Owner added to database!")
-            print("------------------------------------")
-            input("Press ENTER to return to Main Menu...")
-            break
-        else:
-            print("\nDog and breed combo already exists in database.")
-            print("Enter info for dog not currently in system.\n")
-            (dog_name, dog_breed,
-            owner_name, owner_phone) = dog_info()
-            continue
 
 
 def purchase_convert():
@@ -110,13 +80,13 @@ def check_if_owner_phone_exists(member_phone):
 
 def check_if_dog_and_owner_exist_for_sub():
     (dog_name, dog_breed,
-    owner_name, owner_phone) = dog_info()
+    owner_name, owner_phone) = dog.dog_info()
     animal_check = session.query(Dog).filter(Dog.name == dog_name).filter(Dog.breed == dog_breed).first()
     phone_check = session.query(Human).filter(Human.phone == owner_phone).first()
     if animal_check == None:
         print("Dog does not currently exist in system.")
         input("Press ENTER add Dog to system...")
-        create_dog_owner(dog_name, dog_breed,
+        dog.create_dog_owner(dog_name, dog_breed,
                             owner_name, owner_phone)
     elif phone_check != None:
         print("Phone number already exists in system.")
@@ -175,8 +145,8 @@ def create_owner_sub():
             elif missing_item in ["no", "n"]:
                 input("\nPress ENTER add Dog to system...")
                 (dog_name, dog_breed,
-                 owner_name, owner_phone) = dog_info()
-                create_dog_owner(dog_name, dog_breed,
+                 owner_name, owner_phone) = dog.dog_info()
+                dog.create_dog_owner(dog_name, dog_breed,
                                  owner_name, owner_phone)
             elif missing_item.lower() == "exit":
                 break
@@ -270,8 +240,8 @@ def app():
         menu_choice = menu()
         if menu_choice == "1":
             (dog_name, dog_breed,
-            owner_name, owner_phone) = dog_info()
-            create_dog_owner(dog_name, dog_breed,
+            owner_name, owner_phone) = dog.dog_info()
+            dog.create_dog_owner(dog_name, dog_breed,
                              owner_name, owner_phone)
         elif menu_choice == "2":
             log_purchase()
