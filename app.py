@@ -1,5 +1,5 @@
 from models import (Base, engine, session,
-                    Dog, Human, Purchase, Subscription)
+                    Dog, Human, Subscription)
 import time
 import dog
 import purchase
