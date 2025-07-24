@@ -144,7 +144,7 @@ def sub_menu_decision_tree(menu_decision, subscription):
         return 'main-menu'
 
 
-def subscriber_status_change_menu():
+def subscriber_status_change_menus():
     sub_menu_exit_choice = 0
     while not sub_menu_exit_choice:
         phone_number = input("Enter subscriber's phone number: ")
@@ -170,12 +170,25 @@ def subscriber_status_change_menu():
                 return 'main-menu'
             elif sub_menu_exit_choice == True:
                 return True
+        elif subscriber == None:
+            print("""
+                  \rNo subscriber exists with that phone number...
+                  \rSelect one of the below options:
+                  \r1) Back to enter phone number
+                  \r2) Go back to Main Menu
+                  """)
+            menu_decision = input("> ")
+            if menu_decision == "1":
+                continue
+            elif menu_decision == "2":
+                return 'main-menu'
+            
 
 
 def change_status_on_sub():
     end_loop = 0
     while not end_loop:
-        end_loop = subscriber_status_change_menu()
+        end_loop = subscriber_status_change_menus()
         if end_loop == 'main-menu':
             break
         session.commit()
