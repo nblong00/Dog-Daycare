@@ -4,8 +4,8 @@ import dog
 
 
 def check_if_owner_phone_exists(member_phone):
-    phone_exists = session.query(Human).filter(Human.phone == member_phone).first()
     while True:
+        phone_exists = session.query(Human).filter(Human.phone == member_phone).first()
         if phone_exists != None:
             tier = input("Enter tier of subscription (1-3): ")
             new_sub = Subscription(member_id=phone_exists.id, tier=tier, status="Active")
