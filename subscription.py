@@ -149,10 +149,11 @@ def subscriber_status_change_menus():
     while not sub_menu_exit_choice:
         phone_number = input("Enter subscriber's phone number: ")
         subscriber = session.query(Human).filter(Human.phone == phone_number).first()
+        subscription = session.query(Subscription).filter(Subscription.member_id == subscriber.id).first()
         time.sleep(0.5)
         print("\n----------------------------------------")
         time.sleep(0.5)
-        if subscriber != None:
+        if subscriber != None and subscription != None:
             print(f"""
                   \rSubscriber selected-
                   \rPhone Number: {phone_number} | Name: {subscriber.name}\n
@@ -164,13 +165,12 @@ def subscriber_status_change_menus():
                   \r5) Go back to Main Menu
                   """)
             menu_decision = input("> ")
-            subscription = session.query(Subscription).filter(Subscription.member_id == subscriber.id).first()
             sub_menu_exit_choice = sub_menu_decision_tree(menu_decision, subscription)
             if sub_menu_exit_choice == 'main-menu':
                 return 'main-menu'
             elif sub_menu_exit_choice == True:
                 return True
-        elif subscriber == None:
+        elif subscription == None:
             print("""
                   \rNo subscriber exists with that phone number...
                   \rSelect one of the below options:
@@ -192,10 +192,11 @@ def change_status_on_sub():
         if end_loop == 'main-menu':
             break
         session.commit()
-        print("\nSubscription updated!")
-        print("------------------------------------")
-        print("Would you like to change another subscription? (yes/no)")
-        print(end_loop)
-        user_input = input("\n> ")
+        print("""
+              \nSubscription updated!
+              \r------------------------------------
+              \rWould you like to change another subscription? (yes/no)
+              """)
+        user_input = input("> ")
         if user_input in ["yes", "ye", "y"]:
             end_loop = 0
