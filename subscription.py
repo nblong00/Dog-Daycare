@@ -43,11 +43,12 @@ def check_if_dog_and_owner_exist_for_sub():
     animal_check = session.query(Dog).filter(Dog.name == dog_name).filter(Dog.breed == dog_breed).first()
     phone_check = session.query(Human).filter(Human.phone == owner_phone).first()
     if animal_check == None:
-        print("Dog does not currently exist in system.")
+        print("\nDog does not currently exist in system.")
         input("Press ENTER add Dog to system...")
         dog.create_dog_owner(dog_name, dog_breed,
                             owner_name, owner_phone)
-    elif phone_check != None:
+        return True
+    elif phone_check != None and animal_check != None:
         print("Phone number already exists in system.")
         input("Press ENTER to setup subscription...")
         tier = input("Enter tier of subscription (1-3): ")
@@ -73,7 +74,7 @@ def check_if_dog_and_owner_exist_for_sub():
         print("------------------------------------")
         input("Press ENTER to start subscription setup...")
         phone_exists = session.query(Human).filter(Human.phone == owner_phone).first()
-        tier = input("Enter tier of subscription (1-3): ")
+        tier = input("\nEnter tier of subscription (1-3): ")
         new_sub = Subscription(member_id=phone_exists.id, tier=tier, status="Active")
         session.add(new_sub)
         session.commit()
