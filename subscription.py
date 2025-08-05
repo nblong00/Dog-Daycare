@@ -12,15 +12,21 @@ def check_if_owner_phone_exists(member_phone):
             session.add(new_sub)
             session.commit()
             time.sleep(0.5)
-            print("\nNew Subscription added to database!")
-            print("------------------------------------")
-            print("Would you like to add another subscription? (yes/no)")
-            user_input = input("\n> ")
-            break
+            print("""
+                  \rNew Subscription added to database
+                  \r------------------------------------
+                  \rWould you like to add another subscription? (yes/no)
+                  """)
+            user_input = input("> ")
+            if user_input in ["yes", "ye", "y"]:
+                create_owner_sub()
+            elif user_input in ["no", "n"]:
+                print("\nReturning to Main Menu...")
+                return True
         if phone_exists == None:
-            print("\nNumber entered is not in system...")
-            print("Choose option below (1-2):")
-            print(f"""
+            print("""
+                  \rNumber entered is not in system...
+                  \rChoose option below (1-2):
                   \r1) Try inputting phone again
                   \r2) Go back to Main Menu
                   """)
@@ -49,9 +55,11 @@ def check_if_dog_and_owner_exist_for_sub():
         session.add(new_sub)
         session.commit()
         time.sleep(0.5)
-        print("\nNew Subscription added to database!")
-        print("------------------------------------")
-        print("Would you like to add another subscription? (yes/no)")
+        print("""
+              \rNew Subscription added to database!
+              \r------------------------------------
+              \rWould you like to add another subscription? (yes/no)
+              """)
         user_input = input("\n> ")
         if user_input in ["yes", "ye", "y"]:
             return False
@@ -70,10 +78,12 @@ def check_if_dog_and_owner_exist_for_sub():
         session.add(new_sub)
         session.commit()
         time.sleep(0.5)
-        print("\nNew Subscription added to database!")
-        print("------------------------------------")
-        print("Would you like to add another subscription? (yes/no)")
-        user_input = input("\n> ")
+        print("""
+              \rNew Subscription added to database!
+              \r------------------------------------
+              \rWould you like to add another subscription? (yes/no)
+              """)
+        user_input = input("> ")
         if user_input in ["yes", "ye", "y"]:
             return False
         elif user_input in ["no", "n"]:
@@ -83,16 +93,20 @@ def check_if_dog_and_owner_exist_for_sub():
 def create_owner_sub():
     exit_to_menu = 0
     while not exit_to_menu:
-        print("\nIs Owner registered in system? (yes/no)")
-        print("* Enter EXIT to return to Main Menu.")
-        owner_exist = input("\n> ")
+        print("""
+              \rIs Owner registered in system? (yes/no)
+              \r* Enter EXIT to return to Main Menu.
+              """)
+        owner_exist = input("> ")
         if owner_exist in ["yes", "ye", "y"]:
-            member_phone = input("Enter owner's phone number: ")
+            member_phone = input("\nEnter owner's phone number: ")
             exit_to_menu = check_if_owner_phone_exists(member_phone)
         if owner_exist in ["no", "n"]:
-            print("\nIs Dog registered in system? (yes/no)")
-            print("* Enter EXIT to return to Main Menu.")
-            missing_item = input("\n> ")
+            print("""
+                  \rIs Dog registered in system? (yes/no)
+                  \r* Enter EXIT to return to Main Menu.
+                  """)
+            missing_item = input("> ")
             if missing_item in ["yes", "ye", "y"]:
                 exit_to_menu = check_if_dog_and_owner_exist_for_sub()
             elif missing_item in ["no", "n"]:
@@ -129,7 +143,7 @@ def sub_menu_decision_tree(menu_decision, subscription):
     elif menu_decision == "3":
         while True:
             try:
-                tier_change = input("Enter tier to change to (1-3): ")
+                tier_change = input("\nEnter tier to change to (1-3): ")
                 if tier_change in ["1", "2", "3"]:
                     subscription.tier = int(tier_change)
                     return True
@@ -193,7 +207,7 @@ def change_status_on_sub():
             break
         session.commit()
         print("""
-              \nSubscription updated!
+              \rSubscription updated!
               \r------------------------------------
               \rWould you like to change another subscription? (yes/no)
               """)
