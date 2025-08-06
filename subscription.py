@@ -37,6 +37,29 @@ def check_if_owner_phone_exists(member_phone):
                 return True
 
 
+def subscription_setup(owner_phone):
+    input("Press ENTER to start subscription setup...")
+    phone_exists = session.query(Human).filter(Human.phone == owner_phone).first()
+    tier = input("\nEnter tier of subscription (1-3): ")
+    new_sub = Subscription(member_id=phone_exists.id, tier=tier, status="Active")
+    session.add(new_sub)
+    session.commit()
+    time.sleep(0.5)
+
+
+def new_sub_added():
+    print("""
+          \rNew Subscription added to database!
+          \r------------------------------------
+          \rWould you like to add another subscription? (yes/no)
+          """)
+    user_input = input("> ")
+    if user_input in ["yes", "ye", "y"]:
+        return False
+    elif user_input in ["no", "n"]:
+        return True
+
+
 def check_if_dog_and_owner_exist_for_sub():
     (dog_name, dog_breed,
     owner_name, owner_phone) = dog.dog_info()
@@ -47,24 +70,26 @@ def check_if_dog_and_owner_exist_for_sub():
         input("Press ENTER add Dog to system...")
         dog.create_dog_owner(dog_name, dog_breed,
                             owner_name, owner_phone)
-        return True
-    elif phone_check != None and animal_check != None:
-        print("Phone number already exists in system.")
-        input("Press ENTER to setup subscription...")
-        tier = input("Enter tier of subscription (1-3): ")
-        new_sub = Subscription(member_id=phone_check.id, tier=tier, status="Active")
-        session.add(new_sub)
-        session.commit()
-        time.sleep(0.5)
-        print("""
-              \rNew Subscription added to database!
-              \r------------------------------------
-              \rWould you like to add another subscription? (yes/no)
-              """)
-        user_input = input("\n> ")
-        if user_input in ["yes", "ye", "y"]:
+        subscription_setup(owner_phone)
+        if new_sub_added() == False:
             return False
-        elif user_input in ["no", "n"]:
+        else:
+            return True
+    elif phone_check != None and animal_check != None:
+        print("\nPhone number already exists in system...")
+        sub_record_check = session.query(Subscription).filter(Subscription.member_id == phone_check.id).first()
+        if sub_record_check == None:
+            print("Subscription does not currently exist for owner...\n")
+            subscription_setup(owner_phone)
+            if new_sub_added() == False:
+                return False
+            else:
+                return True
+        else:
+            print("""
+                  \rSubscription already exists for this owner...
+                  \rReturning to Main Menu...
+                  """)
             return True
     elif phone_check == None and animal_check != None:
         new_owner = Human(dog_id=animal_check.id, name=owner_name, phone=owner_phone)
@@ -72,22 +97,10 @@ def check_if_dog_and_owner_exist_for_sub():
         session.commit()
         print("\nNew Owner added to database!")
         print("------------------------------------")
-        input("Press ENTER to start subscription setup...")
-        phone_exists = session.query(Human).filter(Human.phone == owner_phone).first()
-        tier = input("\nEnter tier of subscription (1-3): ")
-        new_sub = Subscription(member_id=phone_exists.id, tier=tier, status="Active")
-        session.add(new_sub)
-        session.commit()
-        time.sleep(0.5)
-        print("""
-              \rNew Subscription added to database!
-              \r------------------------------------
-              \rWould you like to add another subscription? (yes/no)
-              """)
-        user_input = input("> ")
-        if user_input in ["yes", "ye", "y"]:
+        subscription_setup(owner_phone)
+        if new_sub_added() == False:
             return False
-        elif user_input in ["no", "n"]:
+        else:
             return True
 
 

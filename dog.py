@@ -23,7 +23,6 @@ def create_dog_owner(dog_name, dog_breed,
             session.commit()
             print("\nNew Dog and Owner added to database!")
             print("------------------------------------")
-            input("Press ENTER to return to Main Menu...")
             break
         else:
             print("\nDog and breed combo already exists in database.")
