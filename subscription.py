@@ -12,15 +12,9 @@ def check_if_owner_phone_exists(member_phone):
             session.add(new_sub)
             session.commit()
             time.sleep(0.5)
-            print("""
-                  \rNew Subscription added to database
-                  \r------------------------------------
-                  \rWould you like to add another subscription? (yes/no)
-                  """)
-            user_input = input("> ")
-            if user_input in ["yes", "ye", "y"]:
+            if new_sub_added() == False:
                 create_owner_sub()
-            elif user_input in ["no", "n"]:
+            else:
                 print("\nReturning to Main Menu...")
                 return True
         if phone_exists == None:
