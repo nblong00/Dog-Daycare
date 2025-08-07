@@ -3,34 +3,6 @@ import time
 import dog
 
 
-def check_if_owner_phone_exists(member_phone):
-    while True:
-        phone_exists = session.query(Human).filter(Human.phone == member_phone).first()
-        if phone_exists != None:
-            tier = input("Enter tier of subscription (1-3): ")
-            new_sub = Subscription(member_id=phone_exists.id, tier=tier, status="Active")
-            session.add(new_sub)
-            session.commit()
-            time.sleep(0.5)
-            if new_sub_added() == False:
-                create_owner_sub()
-            else:
-                print("\nReturning to Main Menu...")
-                return True
-        if phone_exists == None:
-            print("""
-                  \rNumber entered is not in system...
-                  \rChoose option below (1-2):
-                  \r1) Try inputting phone again
-                  \r2) Go back to Main Menu
-                  """)
-            user_input = input("> ")
-            if user_input == '1':
-                member_phone = input("Enter owner's phone number: ")
-            if user_input == '2':
-                return True
-
-
 def subscription_setup(owner_phone):
     input("Press ENTER to start subscription setup...")
     phone_exists = session.query(Human).filter(Human.phone == owner_phone).first()
@@ -43,7 +15,7 @@ def subscription_setup(owner_phone):
 
 def new_sub_added():
     print("""
-          \rNew Subscription added to database!
+          \rSubscription record synced with database!
           \r------------------------------------
           \rWould you like to add another subscription? (yes/no)
           """)
@@ -96,6 +68,34 @@ def check_if_dog_and_owner_exist_for_sub():
             return False
         else:
             return True
+
+
+def check_if_owner_phone_exists(member_phone):
+    while True:
+        phone_exists = session.query(Human).filter(Human.phone == member_phone).first()
+        if phone_exists != None:
+            tier = input("Enter tier of subscription (1-3): ")
+            new_sub = Subscription(member_id=phone_exists.id, tier=tier, status="Active")
+            session.add(new_sub)
+            session.commit()
+            time.sleep(0.5)
+            if new_sub_added() == False:
+                create_owner_sub()
+            else:
+                print("\nReturning to Main Menu...")
+                return True
+        if phone_exists == None:
+            print("""
+                  \rNumber entered is not in system...
+                  \rChoose option below (1-2):
+                  \r1) Try inputting phone again
+                  \r2) Go back to Main Menu
+                  """)
+            user_input = input("> ")
+            if user_input == '1':
+                member_phone = input("Enter owner's phone number: ")
+            if user_input == '2':
+                return True
 
 
 def create_owner_sub():
@@ -204,7 +204,6 @@ def subscriber_status_change_menus():
                 continue
             elif menu_decision == "2":
                 return 'main-menu'
-            
 
 
 def change_status_on_sub():
@@ -214,11 +213,4 @@ def change_status_on_sub():
         if end_loop == 'main-menu':
             break
         session.commit()
-        print("""
-              \rSubscription updated!
-              \r------------------------------------
-              \rWould you like to change another subscription? (yes/no)
-              """)
-        user_input = input("> ")
-        if user_input in ["yes", "ye", "y"]:
-            end_loop = 0
+        end_loop = new_sub_added()
