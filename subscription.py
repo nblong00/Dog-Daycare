@@ -213,4 +213,16 @@ def change_status_on_sub():
         if end_loop == 'main-menu':
             break
         session.commit()
-        end_loop = new_sub_added()
+        end_loop = update_sub_completion()
+
+def update_sub_completion():
+    print("""
+          \rSubscription update synced with database!
+          \r------------------------------------
+          \rWould you like to update another subscription? (yes/no)
+          """)
+    user_input = input("> ")
+    if user_input in ["yes", "ye", "y"]:
+        return False
+    elif user_input in ["no", "n"]:
+        return True
