@@ -1,4 +1,5 @@
 from models import (session, Dog, Human, Subscription)
+from sqlalchemy.orm import joinedload
 import time
 import dog
 
@@ -130,12 +131,13 @@ def create_owner_sub():
 
 
 def check_current_subs():
-    current_subs = session.query(Subscription).all()
+    current_subs = session.query(Subscription).options(
+        joinedload(Subscription.member)).all()
     print("\nFetching current subscribers...")
     time.sleep(1)
     print("----------------------------------------")
     for sub in current_subs:
-        sub_user = session.query(Human).filter(Human.id == sub.member_id).first()
+        sub_user = sub.member
         print(f"Sub_ID: {sub.id} | Name: {sub_user.name} | Phone: {sub_user.phone} | Tier: {sub.tier} | Status: {sub.status}")
     print("----------------------------------------")
     input("\nPress ENTER to return back to Main Menu...")
